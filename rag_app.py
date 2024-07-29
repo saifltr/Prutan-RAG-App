@@ -14,6 +14,11 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 
+st.write(
+    "OPENAI_API_KEY has been set",
+    os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
+)
+
 load_dotenv()
 
 def extract_text_from_pdf(pdf_path):
