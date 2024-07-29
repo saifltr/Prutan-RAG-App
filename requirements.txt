@@ -1,2 +1,8 @@
 PyMuPDF
 faiss-cpu
+openai
+pickle5
+numpy
+langchain_openai
+langchain_community
+langchain
