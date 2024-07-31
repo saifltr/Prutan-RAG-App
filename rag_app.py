@@ -13,12 +13,13 @@ from langchain.docstore.document import Document
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
+st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
+
+
 st.write(
     "OPENAI_API_KEY has been set",
     os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
 )
-
-st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
 
 
 def extract_text_from_pdf(pdf_path):
