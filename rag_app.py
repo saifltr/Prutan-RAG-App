@@ -12,7 +12,6 @@ from langchain.text_splitter import TextSplitter
 from langchain.docstore.document import Document
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from dotenv import load_dotenv
 
 st.write(
     "OPENAI_API_KEY has been set",
@@ -21,8 +20,6 @@ st.write(
 
 st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
 
-
-load_dotenv()
 
 def extract_text_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
