@@ -12,15 +12,14 @@ from langchain.text_splitter import TextSplitter
 from langchain.docstore.document import Document
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
 
-st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
+# st.write(
+#     "OPENAI_API_KEY has been set",
+#     os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
+# )
 
-
-st.write(
-    "OPENAI_API_KEY has been set",
-    os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
-)
-
+load_dotenv()
 
 def extract_text_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
@@ -71,14 +70,29 @@ def create_or_load_index(pdf_path, index_directory):
 def create_rag_system(vector_store):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
-    prompt_template = """You are an AI assistant tasked with answering questions about financial requests. Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    prompt_template = """You are a financial assistant AI specializing in generating request templates for various financial services. Your task is to create a request template based on the user's input, no matter how complete or incomplete it may be. Follow these guidelines:
+
+1. Identify the type of financial request from the user's query, even if it's partially stated (e.g., "PayPal balance", "NPCI payment", etc.).
+
+2. Always refer to the provided context to inform your response.
+
+3. Generate a structured template for the identified request type, using the context as your primary source of information.
+
+4. If the user's question is incomplete or unclear, use the context to infer the most likely request they're seeking.
+
+5. Include all necessary fields and information typically required for such a request, based on the context.
+
+6. If multiple interpretations are possible, provide the most relevant template based on the context.
+
+User query: {question}
 
 Context:
 {context}
 
-Question: {question}
+Based on this query and the provided context, generate an appropriate request template or response. Always provide an answer, using the context to fill in any gaps in the user's question. If you're unsure about specific details, make reasonable assumptions based on the context and clearly state any assumptions you've made.
 
-Answer:"""
+Remember: The answer always lies within the context. Refer to it continuously to ensure accuracy and relevance in your response.
+"""
 
     PROMPT = PromptTemplate(
         template=prompt_template, input_variables=["context", "question"]
@@ -106,6 +120,7 @@ vector_store, documents = create_or_load_index(pdf_path, index_directory)
 
 rag_system = create_rag_system(vector_store)
 
+st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
 
 st.title("API Request Generator ISO/JSON in format 💻🛠️")
 st.markdown("This tool helps you generate structured financial requests. Just type your request, and It'll help you create the appropriate JSON or ISO 8583 format.")
