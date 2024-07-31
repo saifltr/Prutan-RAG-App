@@ -14,10 +14,13 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 
-# st.write(
-#     "OPENAI_API_KEY has been set",
-#     os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
-# )
+st.write(
+    "OPENAI_API_KEY has been set",
+    os.environ["OPENAI_API_KEY"] == st.secrets["OPENAI_API_KEY"],
+)
+
+st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
+
 
 load_dotenv()
 
@@ -120,7 +123,6 @@ vector_store, documents = create_or_load_index(pdf_path, index_directory)
 
 rag_system = create_rag_system(vector_store)
 
-st.set_page_config(page_title="API Request Generator ISO/JSON", layout="wide")
 
 st.title("API Request Generator ISO/JSON in format 💻🛠️")
 st.markdown("This tool helps you generate structured financial requests. Just type your request, and It'll help you create the appropriate JSON or ISO 8583 format.")
